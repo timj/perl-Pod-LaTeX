@@ -1,7 +1,7 @@
 README
 LaTeX.pm
 ChangeLog
-pod2latex
+pod2latex.PL
 Makefile.PL
 t/require.t
 t/pod2latex.t
