@@ -1,3 +1,13 @@
+2000-08-20  Tim Jenness  <timj@jach.hawaii.edu>
+
+	* LaTeX.pm (add_item): Handle long item strings (from  Mark
+	A. Hershberger <mah@everybody.org>)
+	(_replace_special_chars): Escape ~ (from Simon Cozens
+	<simon@@cozens.net>)
+	Escape | (thanks to Marcel Grunauer <marcel@codewerk.com>)
+	Add support for E<verbar> and E<sol>
+
+	
 2000-05-15  Tim Jenness  <timj@jach.hawaii.edu>
 
 	* V0.52 for CPAN release 
