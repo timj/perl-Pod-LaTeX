@@ -11,7 +11,7 @@
 use Test;
 use strict;
 
-BEGIN { plan tests => 100 }
+BEGIN { plan tests => 154 }
 
 use Pod::LaTeX;
 
@@ -32,10 +32,13 @@ while (my $line = <DATA>) {
 # Create a new parser
 my $parser = Pod::LaTeX->new;
 ok($parser);
-$parser->Head1Level(2);
-# We don't want the preamble since that includes a timestamp
-$parser->AddPreamble(0);
-$parser->AddPostamble(0);
+$parser->Head1Level(1);
+# Add the preamble but remember not to compare the timestamps
+$parser->AddPreamble(1);
+$parser->AddPostamble(1);
+
+# For a laugh add a table of contents
+$parser->TableOfContents(1);
 
 # Create an output file
 open(OUTFH, "> test.tex" ) or die "Unable to open test tex file: $!\n";
@@ -52,6 +55,7 @@ my @output = <INFH>;
 
 ok(@output, @reference);
 for my $i (0..$#reference) {
+  next if $reference[$i] =~ /^%%/; # skip timestamp comments
   ok($output[$i], $reference[$i]);
 }
 
@@ -59,7 +63,23 @@ close(INFH) or die "Error closing INFH test.tex: $!\n";
 
 
 __DATA__
-\subsection*{Introduction\label{Introduction}\index{Introduction}}\begin{itemize}
+\documentclass{article}
+
+%%  Latex generated from POD in document ...
+%%  Using the perl module Pod::LaTeX
+%%  Converted on Tue Nov 20 20:43:05 2001
+
+
+\usepackage{makeidx}
+\makeindex
+
+
+\begin{document}
+
+\tableofcontents
+
+\section{Introduction\label{Introduction}\index{Introduction}}
+\begin{itemize}
 
 \item 
 
@@ -106,7 +126,8 @@ Be consistent.
 Be nice.
 
 \end{itemize}
-\subsection*{Links\label{Links}\index{Links}}
+\section{Links\label{Links}\index{Links}}
+
 
 This link should just include one word: \textsf{Pod::LaTeX}
 
@@ -123,7 +144,8 @@ Standard link: the \emph{Pod::LaTeX} manpage.
 
 Now refer to an external section: the section on \textsf{sec} in the \emph{Pod::LaTeX} manpage
 
-\subsection*{Lists\label{Lists}\index{Lists}}
+\section{Lists\label{Lists}\index{Lists}}
+
 
 Test description list with long lines
 
@@ -133,6 +155,18 @@ Test description list with long lines
 
 Some additional para.
 
+\begin{itemize}
+
+\item 
+
+Nested itemized list
+
+
+\item 
+
+Second item
+
+\end{itemize}
 
 \item[some longer text than that] \mbox{}
 
@@ -149,13 +183,40 @@ Some more content for the item.
 This is item content.
 
 \end{description}
-\subsection*{Escapes\label{Escapes}\index{Escapes}}
+\section{Escapes\label{Escapes}\index{Escapes}}
+
 
 Test some normal escapes such as $<$ (lt) and $>$ (gt) and $|$ (verbar) and
 \texttt{\~{}} (tilde) and \& (amp) as well as $<$ (Esc lt) and $|$ (Esc
 verbar) and / (Esc sol) and $>$ (Esc gt) and \& (Esc amp)
 and " (Esc quot) and even $\alpha$ (Esc alpha).
 
+\section{For blocks\label{For_blocks}\index{For blocks}}
+  Some latex code \textbf{here}.
+
+
+
+Some text that should appear.
+
+
+
+Some more text that should appear
+
+Some latex in a \textsf{begin block}
+
+and some more
+
+\begin{equation}
+a = \frac{3}{2}
+\end{equation}
+
+
+
+Back to pod.
+
+\printindex
+
+\end{document}
 =pod
 
 =head1 Introduction
@@ -222,6 +283,18 @@ Test description list with long lines
 
 Some additional para.
 
+=over 4
+
+=item *
+
+Nested itemized list
+
+=item *
+
+Second item
+
+=back
+
 =item some longer text than that
 
 and again.
@@ -242,5 +315,31 @@ Test some normal escapes such as < (lt) and > (gt) and | (verbar) and
 ~ (tilde) and & (amp) as well as E<lt> (Esc lt) and E<verbar> (Esc
 verbar) and E<sol> (Esc sol) and E<gt> (Esc gt) and E<amp> (Esc amp)
 and E<quot> (Esc quot) and even E<alpha> (Esc alpha).
+
+=head1 For blocks
+
+=for latex
+  Some latex code \textbf{here}.
+
+Some text that should appear.
+
+=for comment
+  Should not print anything
+
+Some more text that should appear
+
+=begin latex
+
+Some latex in a \textsf{begin block}
+
+and some more
+
+\begin{equation}
+a = \frac{3}{2}
+\end{equation}
+
+=end latex
+
+Back to pod.
 
 =cut
