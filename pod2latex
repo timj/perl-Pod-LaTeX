@@ -156,6 +156,10 @@ if ($multi_documents) {
 				  AddPostamble => $postamble,
 				 );
 
+      # Store the file name for error messages
+      # This is a kluge that breaks the data hiding of the object
+      $parser->{_INFILE} = $pod;
+
       # Select sections if supplied
       $parser->select(@{ $options{'sections'}})
 	if @{$options{'sections'}};
