@@ -6,3 +6,4 @@ pod2latex.PL
 Makefile.PL
 t/require.t
 t/pod2latex.t
+t/user.t
