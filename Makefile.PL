@@ -11,6 +11,7 @@ WriteMakefile(
         Pod::Find  => undef,
 	Pod::Parser => undef,
 	Pod::ParseUtils => undef,
+        Pod::Select => undef,
        },
     'dist'      => { COMPRESS => "gzip -9f" },
   ($] >= 5.005 ?    ## Add these new keywords supported since 5.005
