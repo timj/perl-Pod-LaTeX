@@ -49,13 +49,17 @@ $VERSION = '0.54';
 # Up to "yuml" these are taken from the original pod2latex
 # command written by Taro Kawagish (kawagish@imslab.co.jp)
 
+
 %HTML_Escapes = (
-    'amp'       =>      '&',      #   ampersand
-    'lt'        =>      '$<$',    #   ' left chevron, less-than
-    'gt'        =>      '$>$',    #   ' right chevron, greater-than
+    # lt, gt and verbar are inserted without math mode
+    # since the $$ will be added during general correction
+    # for those escpae characters
+    'amp'       =>      '\&',      #   ampersand
+    'lt'        =>      '<',    #   ' left chevron, less-than
+    'gt'        =>      '>',    #   ' right chevron, greater-than
     'quot'      =>      '"',      #   double quote
     'sol'       =>      '/',
-    'verbar'    =>      '$|$',
+    'verbar'    =>      '|',
 
     "Aacute"    =>      "\\'{A}",       #   capital A, acute accent
     "aacute"    =>      "\\'{a}",       #   small a, acute accent
@@ -1286,12 +1290,20 @@ sub add_item {
 
   if ($type eq 'description') {
     # Handle long items - long items do not wrap
-    if (length($paragraph) < 40) {
-      # A real description list item
-      $self->_output("\\item[$paragraph] \\mbox{}");
+    # If the string is longer than 40 characters we split
+    # it into a real item header and some bold text.
+    my $maxlen = 40;
+    my ($hunk1, $hunk2) = $self->_split_delimited( $paragraph, $maxlen );
+
+    # Print the first hunk
+    $self->_output("\n\\item[$hunk1] ");
+
+    # and the second hunk if it is defined
+    if ($hunk2) {
+      $self->_output("\\textbf{$hunk2}");
     } else {
-      # The item is now simply bold text
-      $self->_output(qq{\\item \\textbf{$paragraph}});
+      # Not there so make sure we have a new line
+      $self->_output("\\mbox{}");
     }
 
   } else {
@@ -1299,7 +1311,7 @@ sub add_item {
     # out the something
     my $extra_info = $paragraph;
     $extra_info =~ s/^\*\s*//;
-    $self->_output("\\item $extra_info");
+    $self->_output("\n\\item $extra_info");
   }
 
   # Store the item name in the object. Required so that 
@@ -1596,6 +1608,66 @@ sub _clean_latex_commands {
   return $paragraph
 }
 
+=item B<_split_delimited>
+
+Split the supplied string into two parts at approximately the
+specified word boundary. Special care is made to make sure that it
+does not split in the middle of some curly brackets.
+
+e.g. "this text is \textbf{very bold}" would not be split into
+"this text is \textbf{very" and " bold".
+
+  ($hunk1, $hunk2) = $self->_split_delimited( $para, $length);
+
+The length indicates the maximum length of hunk1.
+
+=cut
+
+# initially Supplied by hsmyers@sdragons.com
+# 10/25/01, utility to split \hbox
+# busting lines. Reformatted by TimJ to match module style.
+sub _split_delimited {
+  my $self = shift;
+  my $input = shift;
+  my $limit = shift;
+
+  # Return immediately if already small
+  return ($input, '') if length($input) < $limit;
+
+  my @output;
+  my $s = '';
+  my $t = '';
+  my $depth = 0;
+  my $token;
+
+  $input =~ s/\n/ /gm;
+  $input .= ' ';
+  foreach ( split ( //, $input ) ) {
+    $token .= $_;
+    if (/\{/) {
+      $depth++;
+    } elsif ( /}/ ) {
+      $depth--;
+    } elsif ( / / and $depth == 0) {
+      push @output, $token if ( $token and $token ne ' ' );
+      $token = '';
+    }
+  }
+
+  foreach  (@output) {
+    if (length($s) < $limit) {
+      $s .= $_;
+    } else {
+      $t .= $_;
+    }
+  }
+
+  # Tidy up
+  $s =~ s/\s+$//;
+  $t =~ s/\s+$//;
+  return ($s,$t);
+}
+
 =back
 
 =end __PRIVATE__
@@ -1617,6 +1689,12 @@ L<Pod::Parser>, L<Pod::Select>, L<pod2latex>
 =head1 AUTHORS
 
 Tim Jenness E<lt>t.jenness@jach.hawaii.eduE<gt>
+
+Bug fixes have been received from: Simon Cozens
+E<lt>simon@cozens.netE<gt>, Mark A. Hershberger
+E<lt>mah@everybody.orgE<gt>, Marcel Grunauer
+E<lt>marcel@codewerk.comE<gt> and Hugh S Myers
+E<lt>hsmyers@sdragons.comE<gt>.
 
 =head1 COPYRIGHT
 
