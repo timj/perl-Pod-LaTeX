@@ -36,7 +36,7 @@ use Carp;
 
 use vars qw/ $VERSION %HTML_Escapes @LatexSections /;
 
-$VERSION = '0.50';
+$VERSION = '0.51';
 
 # Definitions of =headN -> latex mapping
 @LatexSections = (qw/
@@ -864,27 +864,27 @@ sub command {
     $self->{_CURRENT_HEAD1} = $paragraph;
 
     # Print it
-    $self->head(1, $paragraph);
+    $self->head(1, $paragraph, $parobj);
 
   } elsif ($command eq 'head2') {
 
-    $self->head(2, $paragraph);
+    $self->head(2, $paragraph, $parobj);
 
   } elsif ($command eq 'head3') {
 
-    $self->head(3, $paragraph);
+    $self->head(3, $paragraph, $parobj);
 
   } elsif ($command eq 'head4') {
 
-    $self->head(4, $paragraph);
+    $self->head(4, $paragraph, $parobj);
 
   } elsif ($command eq 'head5') {
 
-    $self->head(5, $paragraph);
+    $self->head(5, $paragraph, $parobj);
 
   } elsif ($command eq 'head6') {
 
-    $self->head(6, $paragraph);
+    $self->head(6, $paragraph, $parobj);
 
   } elsif ($command eq 'begin') {
 
@@ -1008,7 +1008,7 @@ sub textblock {
     # Might want to clear the Label() before doing this (CHECK)
 
     # Print the heading
-    $self->head(1, $name);
+    $self->head(1, $name, $parobj);
 
     # Set the labeling in case we want unique names later
     $self->Label( $self->_create_label( $name, 1 ) );
@@ -1049,12 +1049,16 @@ sub interior_sequence {
 
   } elsif ($seq_command eq 'E') {
 
+    # If it is simply a number
+    if ($seq_argument =~ /^\d+$/) {
+      return chr($seq_argument);
     # Look up escape in hash table
-    if (exists $HTML_Escapes{$seq_argument}) {
+    } elsif (exists $HTML_Escapes{$seq_argument}) {
       return $HTML_Escapes{$seq_argument};
 
     } else {
-      warn "Escape sequence $seq_argument not recognised\n";
+      my ($file, $line) = $pod_seq->file_line();
+      warn "Escape sequence $seq_argument not recognised at line $line of file $file\n";
       return;
     }
 
@@ -1187,7 +1191,8 @@ sub end_list {
   my $line_num = shift;
 
   unless (defined $self->lists->[-1]) {
-    warn "No list is active at lin $line_num. Missing =over?";
+    my $file = $self->input_file;
+    warn "No list is active at line $line_num (file=$file). Missing =over?\n";
     return;
   }
 
@@ -1222,7 +1227,8 @@ sub add_item {
   my $line_num = shift;
 
   unless (defined $self->lists->[-1]) {
-    warn "List has already ended by line $line_num. Missing =over?";
+    my $file = $self->input_file;
+    warn "List has already ended by line $line_num of file $file. Missing =over?\n";
     # Replace special chars
 #    $paragraph = $self->_replace_special_chars($paragraph);
     $self->_output("$paragraph\n\n");
@@ -1280,10 +1286,11 @@ sub add_item {
 
 Print a heading of the required level.
 
-  $parser->head($level, $paragraph);
+  $parser->head($level, $paragraph, $parobj);
 
 The first argument is the pod heading level. The second argument
-is the contents of the heading.
+is the contents of the heading. The 3rd argument is a Pod::Paragraph
+object so that the line number can be extracted.
 
 =cut
 
@@ -1291,6 +1298,7 @@ sub head {
   my $self = shift;
   my $num = shift;
   my $paragraph = shift;
+  my $parobj = shift;
 
   # If we are replace 'head1 NAME' with a section
   # we return immediately if we get it
@@ -1310,7 +1318,9 @@ sub head {
 
   # Warn if heading to large
   if ($num > $#LatexSections) {
-    warn "Heading level too large ($level) for LaTeX";
+    my $line = $parobj->file_line;
+    my $file = $self->input_file;
+    warn "Heading level too large ($level) for LaTeX at line $line of file $file\n";
     $level = $#LatexSections;
   }
 
@@ -1381,6 +1391,7 @@ Special characters and the C<latex> equivalents are:
   %     \%
   &     \&
   \     $\backslash$
+  ^     \^{}
 
 =cut
 
@@ -1396,7 +1407,10 @@ sub _replace_special_chars {
 
   # Must be done after escape of \ since this command adds latex escapes
   # Replace characters that can be escaped
-  $paragraph =~ s/([\$\#&%_])/\\$1/g;
+  $paragraph =~ s/([\$\#&%_{}])/\\$1/g;
+
+  # Replace ^ characters with \^{} so that $^F works okay
+  $paragraph =~ s/(\^)/\\$1\{\}/g;
 
   # Now add the dollars around each \backslash
   $paragraph =~ s/(\\backslash)/\$$1\$/g;
