@@ -1,0 +1,9 @@
+pm_to_blib
+blib
+Makefile
+*.log
+*.idx
+*.aux
+*.toc
+pod2latex
+Pod-LaTeX*.tar.gz
