@@ -1,3 +1,8 @@
+2001-11-19  Tim Jenness  <timj@jach.hawaii.edu>
+
+	* LaTeX.pm (verbatim): Use a cleverer approach to tabs. (Hugh S
+	Myers <hughmyers@micron.com>)
+
 2001-11-16  Tim Jenness  <timj@jach.hawaii.edu>
 
 	* LaTeX.pm (_replace_special_chars_late): Finally agree to escape

@@ -1,8 +1,5 @@
 package Pod::LaTeX;
 
-# Copyright (C) 2000 by Tim Jenness <t.jenness@jach.hawaii.edu>
-# All Rights Reserved.
-
 =head1 NAME
 
 Pod::LaTeX - Convert Pod data to formatted Latex
@@ -36,7 +33,7 @@ use Carp;
 
 use vars qw/ $VERSION %HTML_Escapes @LatexSections /;
 
-$VERSION = '0.53';
+$VERSION = '0.54';
 
 # Definitions of =headN -> latex mapping
 @LatexSections = (qw/
@@ -957,8 +954,21 @@ sub verbatim {
     # Clean trailing space
     $paragraph =~ s/\s+$//;
 
-    # Clean tabs
-    $paragraph =~ s/\t/        /g;
+    # Clean tabs. Routine taken from Tabs.pm
+    # by David Muir Sharnoff muir@idiom.com,
+    # slightly modified by hsmyers@sdragons.com 10/22/01
+    my @l = split("\n",$paragraph);
+    foreach (@l) {
+      1 while s/(^|\n)([^\t\n]*)(\t+)/
+	$1. $2 . (" " x 
+		  (8 * length($3)
+		   - (length($2) % 8)))
+	  /sex;
+    }
+    $paragraph = join("\n",@l);
+    # End of change.
+
+
 
     $self->_output('\begin{verbatim}' . "\n$paragraph\n". '\end{verbatim}'."\n");
   }
@@ -1604,10 +1614,10 @@ Tim Jenness E<lt>t.jenness@jach.hawaii.eduE<gt>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2000 Tim Jenness. All Rights Reserved.
+Copyright (C) 2000-2001 Tim Jenness. All Rights Reserved.
 
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
 
 =begin __PRIVATE__
 
