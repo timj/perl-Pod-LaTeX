@@ -1,12 +1,9 @@
 Pod::LaTeX - convert Pod to latex using Pod::Parser
 
-This is the first public release of Pod::LaTeX. This module can be used to
+This is version 0.51 of Pod::LaTeX. This module can be used to
 convert pod data to latex. It uses the standard Pod::Parser module.
 A pod2latex replacement command is provided. This can be installed over
 the pod2latex command distributed with perl.
-
-It could be considered to be in a beta state since it has only been
-tested by me.
 
 Please let me know of any problems.
 
@@ -37,3 +34,21 @@ Astronomy Research Council. All Rights Reserved.  This program is free
 software; you can redistribute it and/or modify it under the same
 terms as Perl itself.
 
+CHANGES
+
+V0.51
+    - Fix some of the warning messages so that they report the
+      line number in the pod file correctly for errors.
+
+    - Fix escaping of ^, { and }
+
+V0.50 
+    - First public release
+
+KNOWN BUGS
+
+  - Still no real test suite
+
+  - Does not recognise  < and > if they are not escaped as E<lt> and E<gt>
+
+  - Does not automatically convert func() to B<func()> and $a to C<$a>
