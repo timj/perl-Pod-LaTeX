@@ -1,3 +1,13 @@
+2003-04-03  Tim Jenness  <tjenness@cpan.org>
+
+	* LaTeX.pm (add_item): Apply patch from Ariel Scolnicov to correct =item 1 blah
+	so that it becomes "1 blah" and not "1. 1 blah" (and duplicate patch from Sudhi Herle).
+
+	* pod2latex: Apply Jarkko's pod typo
+
+	* LaTeX.pm: Add Peter J. Acklam's patch to allow much improved unicode
+	entity support.
+
 2001-11-20  Tim Jenness  <timj@jach.hawaii.edu>
 
 	* Version 0.54 on CPAN
