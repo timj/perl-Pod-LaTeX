@@ -1,3 +1,15 @@
+2003-04-05  Tim Jenness  <tjenness@cpan.org>
+
+	* pod2latex.PL: Change pod2latex so that the binary is generated
+	from a .PL (this allows it to work on VMS). Imported from bleadperl.
+
+	* Version 0.55 CPAN
+	
+	* LaTeX.pm (begin_pod): Add usepackage{textcomp} to preamble.
+
+	* t/pod2latex.t: Fix test to take into account current
+	patches. Add additional test for enumerate environments.
+
 2003-04-03  Tim Jenness  <tjenness@cpan.org>
 
 	* LaTeX.pm (add_item): Apply patch from Ariel Scolnicov to correct =item 1 blah
