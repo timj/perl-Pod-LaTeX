@@ -37,6 +37,7 @@ terms as Perl itself.
 CHANGES
 
 V0.54
+    - Fix misunderstanding with =for
     - Add fixes for <  and > (and also |)
     - Fix tabbing (thanks to Hugh S Myers)
     - Fix strange indenting with long items (Hugh S Myers)

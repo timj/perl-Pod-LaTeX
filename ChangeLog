@@ -1,6 +1,11 @@
-2001-11-19  Tim Jenness  <timj@jach.hawaii.edu>
+2001-11-20  Tim Jenness  <timj@jach.hawaii.edu>
 
 	* Version 0.54 on CPAN
+	
+	* LaTeX.pm (command): Fix the logic in =for blocks (found because
+	perlpod.pod was not formatting correctly with "=for comment".
+
+2001-11-19  Tim Jenness  <timj@jach.hawaii.edu>
 
 	* LaTeX.pm (verbatim): Use a cleverer approach to tabs. (Hugh S
 	Myers <hughmyers@micron.com>)

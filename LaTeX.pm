@@ -255,9 +255,7 @@ sub initialize {
   # Internals
   $self->{_Lists} = [];             # For nested lists
   $self->{_suppress_all_para}  = 0; # For =begin blocks
-  $self->{_suppress_next_para} = 0; # For =for blocks
   $self->{_dont_modify_any_para}=0; # For =begin blocks
-  $self->{_dont_modify_next_para}=0; # For =for blocks
   $self->{_CURRENT_HEAD1}   = '';   # Name of current HEAD1 section
 
   # Options - only initialise if not already set
@@ -841,6 +839,11 @@ sub command {
   # return if we dont care
   return if $command eq 'pod';
 
+  # Store a copy of the raw text in case we are in a =for
+  # block and need to preserve the existing latex
+  my $rawpara = $paragraph;
+
+  # Do the latex escapes
   $paragraph = $self->_replace_special_chars($paragraph);
 
   # Interpolate pod sequences in paragraph
@@ -907,14 +910,24 @@ sub command {
 
   } elsif ($command eq 'for') {
 
-    # pass through if latex
-    if ($paragraph =~ /^latex/i) {
-      # Make sure that next paragraph is not modfied before printing
-      $self->{_dont_modify_next_para} = 1;
+    # =for latex
+    #   some latex
 
-    } else {
-      # Suppress the next paragraph unless it is latex
-      $self->{_suppress_next_para} = 1
+    # With =for we will get the text for the full paragraph
+    # as well as the format name.
+    # We do not get an additional paragraph later on. The next
+    # paragraph is not governed by the =for
+
+    # The first line contains the format and the rest is the
+    # raw code.
+    my ($format, $chunk) = split(/\n/, $rawpara, 2);
+
+    # If we have got some latex code print it out immediately
+    # unmodified. Else do nothing.
+    if ($format =~ /^latex/i) {
+      # Make sure that next paragraph is not modfied before printing
+      $self->_output( $chunk );
+
     }
 
   } elsif ($command eq 'end') {
@@ -943,13 +956,10 @@ sub verbatim {
   my $self = shift;
   my ($paragraph, $line_num, $parobj) = @_;
 
-  # Expand paragraph unless in =for or =begin block
-  if ($self->{_dont_modify_any_para} || $self->{_dont_modify_next_para}) {
+  # Expand paragraph unless in =begin block
+  if ($self->{_dont_modify_any_para}) {
     # Just print as is
     $self->_output($paragraph);
-
-    # Reset flag if in =for
-    $self->{_dont_modify_next_para} = 0;
 
   } else {
 
@@ -989,19 +999,16 @@ sub textblock {
   my ($paragraph, $line_num, $parobj) = @_;
 
   # print Dumper($self);
-  
-  # Expand paragraph unless in =for or =begin block
-  if ($self->{_dont_modify_any_para} || $self->{_dont_modify_next_para}) {
+
+  # Expand paragraph unless in =begin block
+  if ($self->{_dont_modify_any_para}) {
     # Just print as is
     $self->_output($paragraph);
 
-    # Reset flag if in =for
-    $self->{_dont_modify_next_para} = 0;
-
     return;
-  } 
+  }
 
-  
+
   # Escape latex special characters
   $paragraph = $self->_replace_special_chars($paragraph);
 
@@ -1262,7 +1269,7 @@ sub add_item {
 
   # If paragraphs printing is turned off via =begin/=end or whatver
   # simply return immediately
-  return if ($self->{_suppress_all_para} || $self->{_suppress_next_para});
+  return if $self->{_suppress_all_para};
 
   # Check to see whether we are starting a new lists
   if (scalar($self->lists->[-1]->item) == 0) {
@@ -1372,7 +1379,7 @@ sub head {
   my $star = ($level >= $self->LevelNoNum ? '*' : '');
 
   # Section
-  $self->_output("\\" .$LatexSections[$level] .$star ."{$paragraph\\label{".$label ."}\\index{".$index."}}");
+  $self->_output("\\" .$LatexSections[$level] .$star ."{$paragraph\\label{".$label ."}\\index{".$index."}}\n");
 
 }
 
@@ -1397,7 +1404,7 @@ to output parsed text.
 
    $parser->_output($text);
 
-Does not write anything if a =begin or =for is active that should be
+Does not write anything if a =begin is active that should be
 ignored.
 
 =cut
@@ -1406,13 +1413,9 @@ sub _output {
   my $self = shift;
   my $text = shift;
 
-  print { $self->output_handle } $text 
-    unless $self->{_suppress_all_para} ||
-      $self->{_suppress_next_para};
+  print { $self->output_handle } $text
+    unless $self->{_suppress_all_para};
 
-  # Reset pargraph stuff for =for
-  $self->{_suppress_next_para} = 0
-    if $self->{_suppress_next_para};
 }
 
 
