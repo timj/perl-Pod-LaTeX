@@ -1454,10 +1454,10 @@ sub add_item {
     }
 
   } else {
-    # If the item was '* Something' we still need to write
+    # If the item was '* Something' or '\d+ something' we still need to write
     # out the something
     my $extra_info = $paragraph;
-    $extra_info =~ s/^\*\s*//;
+    $extra_info =~ s/^(\*|\d+\.?)\s*//;
     $self->_output("\n\\item $extra_info");
   }
 
@@ -1838,7 +1838,9 @@ Bug fixes and improvements have been received from: Simon Cozens
 E<lt>simon@cozens.netE<gt>, Mark A. Hershberger
 E<lt>mah@everybody.orgE<gt>, Marcel Grunauer
 E<lt>marcel@codewerk.comE<gt>, Hugh S Myers
-E<lt>hsmyers@sdragons.comE<gt> and Peter J Acklam E<lt>jacklam@math.uio.noE<gt>
+E<lt>hsmyers@sdragons.comE<gt>, Peter J Acklam E<lt>jacklam@math.uio.noE<gt>,
+and Ariel Scolnicov E<lt>ariels@compugen.co.ilE<gt>
+
 
 =head1 COPYRIGHT
 
