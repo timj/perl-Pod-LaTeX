@@ -1,5 +1,7 @@
 2001-11-19  Tim Jenness  <timj@jach.hawaii.edu>
 
+	* Version 0.54 on CPAN
+
 	* LaTeX.pm (verbatim): Use a cleverer approach to tabs. (Hugh S
 	Myers <hughmyers@micron.com>)
 	(_replace_special_chars_late): verbar escape was happening in the
