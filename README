@@ -1,6 +1,6 @@
 Pod::LaTeX - convert Pod to latex using Pod::Parser
 
-This is version 0.55 of Pod::LaTeX. This module can be used to
+This is version 0.56 of Pod::LaTeX. This module can be used to
 convert pod data to latex. It uses the standard Pod::Parser module.
 A pod2latex replacement command is provided. This can be installed over
 the pod2latex command distributed with perl.
@@ -29,12 +29,19 @@ AUTHOR
 
 Tim Jenness <t.jenness@jach.hawaii.edu>
 
-Copyright (C) 1999-2003 Tim Jenness and the UK Particle Physics and
+Copyright (C) 1999-2004 Tim Jenness and the UK Particle Physics and
 Astronomy Research Council. All Rights Reserved.  This program is free
 software; you can redistribute it and/or modify it under the same
 terms as Perl itself.
 
 CHANGES
+
+V0.56
+    - Add -prefile/-postfile and -preamble/-postamble options to pod2latex
+      and fix double printing of user postamble.
+      (thanks to Adriano Rodrigues Ferreira)
+    - UserPostamble and UserPreamble were erroneously being written
+      even when AddPostamble and AddPreamble were false.
 
 V0.55
     - Fix enumerated lists so that they do not double up the number
