@@ -1,3 +1,17 @@
+2004-03-07  Tim Jenness  <timj@jach.hawaii.edu>
+
+	* Version 0.56 CPAN
+	
+	* LaTeX.pm (end_pod): Fix bug where UserPostamble and UserPreamble
+	were written even if AddPostamble and AddPreamble were false.
+
+	* pod2latex.PL: Add -pre/postfile and -pre/postamble to pod2latex.
+	(thanks to Adriano Rodrigues Ferreira)
+
+	* LaTeX.pm (end_pod): Fix doubling up of \end{document} when user
+	postamble is used (and add new test t/user.t). (thanks to Adriano
+	Rodrigues Ferreira).
+
 2003-07-27  Tim Jenness  <timj@jach.hawaii.edu>
 
 	* MANIFEST: Forgot to add MANIFEST to the MANIFEST!!
