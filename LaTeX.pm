@@ -481,6 +481,7 @@ This is similar to:
 
   \documentclass{article}
   \usepackage[T1]{fontenc}
+  \usepackage{textcomp}
   \begin{document}
 
 but will be more complicated if table of contents and indexing are required.
@@ -491,6 +492,9 @@ Can be used to set or retrieve the current value.
 
 If used in conjunction with C<AddPostamble> a full latex document will
 be written that could be immediately processed by C<latex>.
+
+For some pod escapes it may be necessary to include the amsmath
+package. This is not yet added to the preamble automaatically.
 
 =cut
 
@@ -905,7 +909,7 @@ __TEX_COMMENT__
 
     # Table of contents
     my $tableofcontents = '\tableofcontents';
-    
+
     $tableofcontents = '%% ' . $tableofcontents
       unless $self->TableOfContents;
 
@@ -913,6 +917,7 @@ __TEX_COMMENT__
     $preamble = << "__TEX_HEADER__";
 \\documentclass{article}
 \\usepackage[T1]{fontenc}
+\\usepackage{textcomp}
 
 $comment
 
