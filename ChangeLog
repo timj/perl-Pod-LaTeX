@@ -1,3 +1,7 @@
+2000-08-20  Tim Jenness  <t.jenness@jach.hawaii.edu>
+
+	* LaTeX.pm (add_item): Fix problem with '* text' items
+
 2000-08-20  Tim Jenness  <timj@jach.hawaii.edu>
 
 	* LaTeX.pm (add_item): Handle long item strings (from  Mark

@@ -1279,7 +1279,11 @@ sub add_item {
     }
 
   } else {
-    $self->_output('\item ');
+    # If the item was '* Something' we still need to write
+    # out the something
+    my $extra_info = $paragraph;
+    $extra_info =~ s/^\*\s*//;
+    $self->_output("\\item $extra_info");
   }
 
   # Store the item name in the object. Required so that 
