@@ -33,7 +33,7 @@ use Carp;
 
 use vars qw/ $VERSION %HTML_Escapes @LatexSections /;
 
-$VERSION = '0.54';
+$VERSION = '0.55';
 
 # Definitions of =headN -> latex mapping
 @LatexSections = (qw/
@@ -1693,7 +1693,7 @@ L<Pod::Parser>, L<Pod::Select>, L<pod2latex>
 
 Tim Jenness E<lt>t.jenness@jach.hawaii.eduE<gt>
 
-Bug fixes have been received from: Simon Cozens
+Bug fixes and improvements have been received from: Simon Cozens
 E<lt>simon@cozens.netE<gt>, Mark A. Hershberger
 E<lt>mah@everybody.orgE<gt>, Marcel Grunauer
 E<lt>marcel@codewerk.comE<gt> and Hugh S Myers
@@ -1701,7 +1701,7 @@ E<lt>hsmyers@sdragons.comE<gt>.
 
 =head1 COPYRIGHT
 
-Copyright (C) 2000-2001 Tim Jenness. All Rights Reserved.
+Copyright (C) 2000-2003 Tim Jenness. All Rights Reserved.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
@@ -1715,3 +1715,5 @@ $Id$
 =end __PRIVATE__
 
 =cut
+
+1;
