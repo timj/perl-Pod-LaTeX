@@ -1,3 +1,11 @@
+2000-05-15  Tim Jenness  <timj@jach.hawaii.edu>
+
+	* V0.52 for CPAN release 
+
+2000-05-09  Tim Jenness  <timj@jach.hawaii.edu>
+
+	* pod2latex: Make sure that argument order is preserved.
+
 2000-05-08  Tim Jenness  <timj@jach.hawaii.edu>
 
 	* LaTeX.pm: Version 0.51
