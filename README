@@ -36,6 +36,9 @@ terms as Perl itself.
 
 CHANGES
 
+V0.57
+    - Missing README file for V0.56 now added. No changes to code.
+
 V0.56
     - Add -prefile/-postfile and -preamble/-postamble options to pod2latex
       and fix double printing of user postamble.

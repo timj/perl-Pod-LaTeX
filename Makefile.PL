@@ -11,7 +11,7 @@ if ( $] > 5.006 ) {
 # Write the makefile
 WriteMakefile(
     'NAME'      => 'Pod::LaTeX',
-    'VERSION_FROM' => 'LaTeX.pm', # finds $VERSION
+    'VERSION' => '0.57',
     'EXE_FILES' => [ 'pod2latex' ],
     'INSTALLDIRS' => $instdirs,
     'PREREQ_PM' => { 
