@@ -4,3 +4,4 @@ ChangeLog
 pod2latex
 Makefile.PL
 t/require.t
+t/pod2latex.t
