@@ -1137,7 +1137,8 @@ sub interior_sequence {
 
   } elsif ($seq_command eq 'P') {
     # Special markup for Pod::Hyperlink
-    # Replace :: with /
+    # Replace :: with / - but not sure if I want to do this
+    # any more.
     my $link = $seq_argument;
     $link =~ s/::/\//g;
 
@@ -1428,7 +1429,6 @@ Special characters and the C<latex> equivalents are:
   \     $\backslash$
   ^     \^{}
   ~     \~{}
-  |     $|$
 
 =cut
 
@@ -1452,9 +1452,6 @@ sub _replace_special_chars {
   # Replace tilde (~) with \texttt{\~{}}
   $paragraph =~ s/~/\\texttt\{\\~\{\}\}/g;
 
-  # Replace | with $|$
-  $paragraph =~ s'\|'$|$'g;
-
   # Now add the dollars around each \backslash
   $paragraph =~ s/(\\backslash)/\$$1\$/g;
   return $paragraph;
@@ -1471,13 +1468,22 @@ Does the following transformation:
 
   <   $<$
   >   $>$
+  |   $|$
+
 
 =cut
 
 sub _replace_special_chars_late {
   my $self = shift;
   my $paragraph = shift;
+
+  # < and >
   $paragraph =~ s/(<|>)/\$$1\$/g;
+
+  # Replace | with $|$
+  $paragraph =~ s'\|'$|$'g;
+
+
   return $paragraph;
 }
 

@@ -2,6 +2,8 @@
 
 	* LaTeX.pm (verbatim): Use a cleverer approach to tabs. (Hugh S
 	Myers <hughmyers@micron.com>)
+	(_replace_special_chars_late): verbar escape was happening in the
+	wrong place and this was ruining link expansion.
 
 2001-11-16  Tim Jenness  <timj@jach.hawaii.edu>
 
