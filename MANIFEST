@@ -1,0 +1,6 @@
+README
+LaTeX.pm
+ChangeLog
+pod2latex
+Makefile.PL
+t/require.t
