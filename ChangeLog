@@ -1,3 +1,10 @@
+2000-05-05  Tim Jenness  <timj@jach.hawaii.edu>
+
+	* pod2latex: Set INFILE name when using filehandle.
+
+	* LaTeX.pm: Fix warning messages so that they correctly list file
+	name and line number. Fix escaping of ^ and {}.
+
 2000-03-30  Tim Jenness  <timj@jach.hawaii.edu>
 
 	* LaTeX.pm: Version 0.50
