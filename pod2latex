@@ -40,10 +40,17 @@ my @files = @ARGV;
 # Now find which ones are real pods and convert 
 # directories to their contents.
 
-my %pods = pod_find(@files);
+# Extract the pods from each arg since some of them might
+# be directories
+# This is not as efficient as using pod_find to search through
+# everything at once but it allows us to preserve the order 
+# supplied by the user
 
-# The file list is therefore the keys
-my @pods = keys %pods;
+my @pods;
+foreach my $arg (@files) {
+  my %pods = pod_find($arg);
+  push(@pods, sort keys %pods);
+}
 
 # Abort if nothing to do
 if ($#pods == -1) {
