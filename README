@@ -1,6 +1,6 @@
 Pod::LaTeX - convert Pod to latex using Pod::Parser
 
-This is version 0.56 of Pod::LaTeX. This module can be used to
+This is version 0.58 of Pod::LaTeX. This module can be used to
 convert pod data to latex. It uses the standard Pod::Parser module.
 A pod2latex replacement command is provided. This can be installed over
 the pod2latex command distributed with perl.
@@ -23,7 +23,8 @@ Requires perl 5.005 or newer.
 Written completely in Perl. XS is not required.
 
 Requires the PodParser package from CPAN. This is standard with
-perl 5.6.0.
+perl 5.6.0. This module is part of the standard perl distribution
+and has been since perl 5.6.1.
 
 AUTHOR
 
@@ -35,6 +36,9 @@ software; you can redistribute it and/or modify it under the same
 terms as Perl itself.
 
 CHANGES
+
+V0.58
+    - Fix problem with [] in items (R. de Vries)
 
 V0.57
     - Missing README file for V0.56 now added. No changes to code.
