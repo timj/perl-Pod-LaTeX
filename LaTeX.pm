@@ -844,8 +844,11 @@ sub command {
 
   # Interpolate pod sequences in paragraph
   $paragraph = $self->interpolate($paragraph, $line_num);
-
   $paragraph =~ s/\s+$//;
+
+  # Replace characters that can only be done after 
+  # interpolation of interior sequences
+  $paragraph = $self->_replace_special_chars_late($paragraph);
 
   # Now run the command
   if ($command eq 'over') {
@@ -992,6 +995,8 @@ sub textblock {
   my $expansion = $self->interpolate($paragraph, $line_num);
   $expansion =~ s/\s+$//;
 
+  # Escape special characters that can not be done earlier
+  $expansion = $self->_replace_special_chars_late($expansion);
 
   # If we are replacing 'head1 NAME' with a section
   # we need to look in the paragraph and rewrite things
@@ -1395,8 +1400,12 @@ with the escaped forms
 
   $escaped = $parser->_replace_special_chars($paragraph);
 
-Need to call this routine before interior_sequences are munged but
-not if verbatim.
+Need to call this routine before interior_sequences are munged but not
+if verbatim. It must be called before interpolation of interior
+sequences so that curly brackets and special latex characters inserted
+during interpolation are not themselves escaped. This means that < and
+> can not be modified here since the text still contains interior
+sequences.
 
 Special characters and the C<latex> equivalents are:
 
@@ -1438,7 +1447,27 @@ sub _replace_special_chars {
 
   # Now add the dollars around each \backslash
   $paragraph =~ s/(\\backslash)/\$$1\$/g;
+  return $paragraph;
+}
 
+=item B<_replace_special_chars_late>
+
+Replace special characters that can not be replaced before interior
+sequence interpolation. See C<_replace_special_chars> for a routine
+to replace special characters prior to interpolation of interior
+sequences.
+
+Does the following transformation:
+
+  <   $<$
+  >   $>$
+
+=cut
+
+sub _replace_special_chars_late {
+  my $self = shift;
+  my $paragraph = shift;
+  $paragraph =~ s/(<|>)/\$$1\$/g;
   return $paragraph;
 }
 

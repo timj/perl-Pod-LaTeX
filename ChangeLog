@@ -1,3 +1,8 @@
+2001-11-16  Tim Jenness  <timj@jach.hawaii.edu>
+
+	* LaTeX.pm (_replace_special_chars_late): Finally agree to escape
+	< and > (thanks to some more prodding from Hugh S Myers)
+
 2000-10-10  Tim Jenness  <timj@jach.hawaii.edu>
 
 	* pod2latex: Add strict and version number.  Add -h1level option.
