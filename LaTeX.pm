@@ -22,7 +22,7 @@ C<Pod::LaTeX> is a module to convert documentation in the Pod format
 into Latex. The L<B<pod2latex>|pod2latex> X<pod2latex> command uses
 this module for translation.
 
-C<Pod::LaTeX> is a derived class from L<Pod::Parser>.
+C<Pod::LaTeX> is a derived class from L<Pod::Select|Pod::Select>.
 
 =cut
 
