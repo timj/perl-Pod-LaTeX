@@ -1147,7 +1147,7 @@ sub interior_sequence {
 
   } elsif ($seq_command eq 'Q') {
     # Special markup for Pod::Hyperlink
-    return "\\textsf{$seq_argument}\n";
+    return "\\textsf{$seq_argument}";
 
   } elsif ($seq_command eq 'X') {
     # Index entries
