@@ -48,6 +48,8 @@ V0.55
       module is part of core perl as of v5.6.1).
     - The pod2latex script is now configured as a true pod2latex.PL
       application (imported changes from bleadperl)
+    - Should now pass tests with Pod::ParseUtils v0.30 installed
+      (thanks to Mark Veltzer for pointing out the problem)
 
 V0.54
     - Fix misunderstanding with =for

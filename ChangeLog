@@ -1,10 +1,14 @@
 2003-04-05  Tim Jenness  <tjenness@cpan.org>
 
+	* Version 0.55 CPAN
+	
+	* t/pod2latex.t: Update the test to work with Pod::ParseUtils
+	v0.30 but retain backwards compatibility. (thanks to Mark Veltzer
+	for pointing this out).
+
 	* pod2latex.PL: Change pod2latex so that the binary is generated
 	from a .PL (this allows it to work on VMS). Imported from bleadperl.
 
-	* Version 0.55 CPAN
-	
 	* LaTeX.pm (begin_pod): Add usepackage{textcomp} to preamble.
 
 	* t/pod2latex.t: Fix test to take into account current

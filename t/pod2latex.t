@@ -15,6 +15,10 @@ BEGIN { plan tests => 172 }
 
 use Pod::LaTeX;
 
+# The link parsing changed between v0.22 and v0.30 of Pod::ParseUtils
+use Pod::ParseUtils;
+my $linkver = $Pod::ParseUtils::VERSION;
+
 # Set up an END block to remove the test output file
 END {
   unlink "test.tex";
@@ -58,6 +62,15 @@ my @output = <INFH>;
 ok(@output, @reference);
 for my $i (0..$#reference) {
   next if $reference[$i] =~ /^%%/; # skip timestamp comments
+
+  # if we are running a new version of Pod::ParseUtils we need
+  # to change the link text. This is a kluge until we drop support
+  # for older versions of Pod::ParseUtils
+  if ($linkver < 0.29 && $output[$i] =~ /manpage/) {
+    # convert our expectations from new to old new format 
+    $reference[$i] =~ s/Standard link: \\emph\{Pod::LaTeX\}/Standard link: the \\emph\{Pod::LaTeX\} manpage/;
+    $reference[$i] =~ s/\\textsf\{sec\} in \\emph\{Pod::LaTeX\}/the section on \\textsf\{sec\} in the \\emph\{Pod::LaTeX\} manpage/;
+  }
   ok($output[$i], $reference[$i]);
 }
 
@@ -142,11 +155,11 @@ it refers to \texttt{Pod::LaTeX}: \textsf{test}.
 
 
 
-Standard link: the \emph{Pod::LaTeX} manpage.
+Standard link: \emph{Pod::LaTeX}.
 
 
 
-Now refer to an external section: the section on \textsf{sec} in the \emph{Pod::LaTeX} manpage
+Now refer to an external section: \textsf{sec} in \emph{Pod::LaTeX}
 
 \section{Lists\label{Lists}\index{Lists}}
 
