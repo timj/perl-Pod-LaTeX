@@ -1,10 +1,7 @@
+#!perl
 # simple test to make sure it loads
 
-use Test;
+use Test::More tests => 1;
 use strict;
+use_ok( "Pod::LaTeX" );
 
-BEGIN { plan tests => 1 }
-
-use Pod::LaTeX;
-
-ok(1);

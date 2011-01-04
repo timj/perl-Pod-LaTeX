@@ -2,6 +2,8 @@
 
 	---- Version 0.59 CPAN ----
 
+	* t/*.t: Use Test::More for tests.
+
 	* Build.PL: Use Module::Build
 
 	* LaTeX.pm: Fix typo in pod (RT #46887 via Dave Mitchell)

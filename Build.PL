@@ -29,7 +29,7 @@ my $build = Module::Build->new
    PL_files => { 'pod2latex.PL' => 'pod2latex' },
    script_files => [ 'pod2latex' ],
    build_requires => {
-                      'Test' => 0,
+                      'Test::More' => 0,
                      },
    installdirs => ( $] > 5.006 ? "core" : "site" ),
   );
