@@ -2,3 +2,8 @@ Makefile
 blib
 pm_to_blib
 pod2latex
+Build
+MYMETA.yml
+META.yml
+_build
+Pod-LaTeX-*
