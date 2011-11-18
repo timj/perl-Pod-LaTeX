@@ -1621,6 +1621,10 @@ sub _replace_special_chars {
 
   # Now add the dollars around each \backslash
   $paragraph =~ s/(\\backslash)/\$$1\$/g;
+
+  # Convert ------ to -{}-{}-{}-{}-{}-
+  $paragraph =~ s/-(?=-)/-{}/g;
+
   return $paragraph;
 }
 
