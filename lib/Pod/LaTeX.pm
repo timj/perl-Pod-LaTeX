@@ -33,7 +33,7 @@ use Carp;
 
 use vars qw/ $VERSION %HTML_Escapes @LatexSections /;
 
-$VERSION = '0.59';
+$VERSION = '0.60';
 
 # Definitions of =headN -> latex mapping
 @LatexSections = (qw/
