@@ -32,7 +32,7 @@ my $build = Module::Build->new
    build_requires => {
                       'Test::More' => 0,
                      },
-   installdirs => ( $] > 5.006 ? "core" : "site" ),
+   installdirs => ( $] > 5.006 and $] <= 5.012 ? "core" : "site" ),
   );
 
 $build->create_build_script;
