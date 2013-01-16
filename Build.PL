@@ -25,13 +25,14 @@ my $build = Module::Build->new
                 'Pod::Parser' => 0,
                 'Pod::ParseUtils' => 0.30,
                 'Pod::Select' => 0,
+                'if' => 0,
                },
    PL_files => { 'pod2latex.PL' => 'pod2latex' },
    script_files => [ 'pod2latex' ],
    build_requires => {
                       'Test::More' => 0,
                      },
-   installdirs => ( $] > 5.006 ? "core" : "site" ),
+   installdirs => ( $] > 5.006 and $] <= 5.012 ? "core" : "site" ),
   );
 
 $build->create_build_script;

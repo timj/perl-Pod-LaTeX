@@ -28,6 +28,8 @@ use strict;
 require Pod::ParseUtils;
 use base qw/ Pod::Select /;
 
+use if $] > 5.017, 'deprecate';
+
 # use Data::Dumper; # for debugging
 use Carp;
 
