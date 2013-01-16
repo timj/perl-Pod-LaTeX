@@ -25,6 +25,7 @@ my $build = Module::Build->new
                 'Pod::Parser' => 0,
                 'Pod::ParseUtils' => 0.30,
                 'Pod::Select' => 0,
+                'if' => 0,
                },
    PL_files => { 'pod2latex.PL' => 'pod2latex' },
    script_files => [ 'pod2latex' ],
