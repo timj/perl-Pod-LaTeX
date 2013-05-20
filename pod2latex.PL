@@ -257,7 +257,7 @@ if ($multi_documents) {
   }
 
   # Should unlink the file if we didn't convert anything!
-  # dont check for return status of unlink
+  # don't check for return status of unlink
   # since there is not a lot to be done if the unlink failed
   # and the program does not rely upon it.
   unlink "$output" unless $converted;
