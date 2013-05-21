@@ -991,7 +991,7 @@ sub command {
   my $self = shift;
   my ($command, $paragraph, $line_num, $parobj) = @_;
 
-  # return if we dont care
+  # return if we don't care
   return if $command eq 'pod';
 
   # Store a copy of the raw text in case we are in a =for
@@ -1054,7 +1054,7 @@ sub command {
 
     # pass through if latex
     if ($paragraph =~ /^latex/i) {
-      # Make sure that subsequent paragraphs are not modfied before printing
+      # Make sure that subsequent paragraphs are not modified before printing
       $self->{_dont_modify_any_para} = 1;
 
     } else {
@@ -1080,7 +1080,7 @@ sub command {
     # If we have got some latex code print it out immediately
     # unmodified. Else do nothing.
     if ($format =~ /^latex/i) {
-      # Make sure that next paragraph is not modfied before printing
+      # Make sure that next paragraph is not modified before printing
       $self->_output( $chunk );
 
     }
